@@ -1,0 +1,6 @@
+USE enaturalist;
+CREATE TABLE usuario(
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  nome varchar(255) NOT NULL,
+  sobrenome varchar(255) NOT NULL
+);
