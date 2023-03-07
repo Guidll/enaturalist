@@ -35,7 +35,7 @@
       <div class="wrapper">
         <form action="get">
           <div>
-            <label for="nome">Nome:</label>
+            <label for="nome">Nome2:</label>
             <input type="text" id="nome">
           </div>
           <div>
