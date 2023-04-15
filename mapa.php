@@ -1,12 +1,11 @@
-<h1>PÃ¡gina de ecopontos</h1>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
 		<title>Google Maps AJAX + mySQL/PHP Example</title>
 		<style type="text/css"> 
 			#map {
 				width: 800px;
-				height: 500px;
+				height: 600px;
 				float: left;
 			}
 			#infoPanel {
@@ -28,7 +27,8 @@
 		
 		//Array com novos marcadores
 		var markersData = new Object();
-		//Objeto de Ã­cones
+
+		//Objeto de ícones
 		var customIcons = {
 		  restaurant: {
 			icon: 'icons/restaurant.png',
@@ -59,22 +59,23 @@
 		  }
 		};
 		
-		//VariÃ¡veis globais
+		//Variáveis globais
 		var map;
 		var infoWindow;
 		
 		//Inicializa o mapa
 		function load() {
 		
-			//ConfiguraÃ§Ãµes do mapa
+			//Configurações do mapa
 			map = new google.maps.Map(document.getElementById("map"), {
-				center: new google.maps.LatLng(-23.53036550000043, -46.368918431794036),
+				center: new google.maps.LatLng(47.6145, -122.3418),
 				zoom: 13,
 				mapTypeId: 'roadmap'
 			});
 		
-			//Janela de informaÃ§Ãµes
+			//Janela de informações
 			infoWindow = new google.maps.InfoWindow;
+
 			//Carrega o XML com as coordenadas salvas no banco de dados
 			downloadUrl("gerarXML.php", function(data) {
 				var xml = data.responseXML;
@@ -101,51 +102,57 @@
 				}
 			});
 		}
-		//Inclui a janela de informaÃ§Ãµes ao marcador
+
+		//Inclui a janela de informações ao marcador
 		function bindInfoWindow(marker, map, infoWindow, html) {
 			google.maps.event.addListener(marker, 'click', function() {
 				infoWindow.setContent(html);
 				infoWindow.open(map, marker);
 				
-				//Painel de InformaÃ§Ãµes
+				//Painel de Informações
 				updateMarkerStatus('Fixo.');
 				geocodePosition(false, marker.getPosition());
 				updateMarkerPosition(marker.getPosition())
 			});
 		}
+
 		//Parseia o XML
 		function downloadUrl(url, callback) {
 			var request = window.ActiveXObject ?
 				new ActiveXObject('Microsoft.XMLHTTP') :
 				new XMLHttpRequest;
+
 			request.onreadystatechange = function() {
 				if (request.readyState == 4) {
 					request.onreadystatechange = doNothing;
 					callback(request, request.status);
 				}
 			};
+
 			request.open('GET', url, true);
 			request.send(null);
 		}
+
 		function doNothing() {}
+
 		/////////////////////////////////////////////
-		// FunÃ§Ãµes dos Marcadores
+		// Funções dos Marcadores
 		/////////////////////////////////////////////
 		
 		//Adiciona novo marcador ao mapa
 		function newMarker(title, type) {
 			
-			//Verifica se title ou type nÃ£o sÃ£o vazios
+			//Verifica se title ou type não são vazios
 			if (!title || !type)
 				return false;
 				
 			//Pega os limites do mapa
 			var bounds = map.getBounds();
 			
-			//ObtÃ©m as coordenadas da posiÃ§Ã£o central do mapa
+			//Obtém as coordenadas da posição central do mapa
 			var center = bounds.getCenter();
 			
-			//Ãcone de acordo com o tipo de marcador
+			//Ícone de acordo com o tipo de marcador
 			var icon = customIcons[type] || {};
 			
 			//Cria um novo marcador
@@ -157,19 +164,19 @@
 				draggable: true
 			});
 			
-			//Atualiza as informaÃ§Ãµes de posiÃ§Ã£o atual
+			//Atualiza as informações de posição atual
 			updateMarkerPosition(center);
 			
-			//Grava as informaÃ§Ãµes no array
+			//Grava as informações no array
 			markersData[title] = new Object();
 			markersData[title]['name'] = title;			
 			markersData[title]['type'] = type;
 			
-			//ObtÃ©m o endereÃ§o da posiÃ§Ã£o global
+			//Obtém o endereço da posição global
 			geocodePosition(marker.getTitle(), marker.getPosition());
 					  
 			//Adiciona os eventos de arrastar ao marcador
-			//Estes irÃ£o atualizar as informaÃ§Ãµes do painel de informaÃ§Ãµes
+			//Estes irão atualizar as informações do painel de informações
 			google.maps.event.addListener(marker, 'dragstart', function() {
 				updateMarkerAddress('Arrastando...');
 			});
@@ -182,7 +189,7 @@
 				geocodePosition(marker.getTitle(), marker.getPosition());
 			});
 			
-			//Exibe as informaÃ§Ãµes do marcador selecionado no painel
+			//Exibe as informações do marcador selecionado no painel
 			google.maps.event.addListener(marker, 'click', function() {
 				updateMarkerStatus('Parado.');
 				geocodePosition(marker.getTitle(), marker.getPosition());
@@ -194,9 +201,9 @@
 			return false;
 		}
 		
-		//Essa funÃ§Ã£o recebe coordenadas de latitude e longitude
-		// e retorna o endereÃ§o desta coordenada
-		//Se title == false, entÃ£o nÃ£o atualiza dados de novos marcadores
+		//Essa função recebe coordenadas de latitude e longitude
+		// e retorna o endereço desta coordenada
+		//Se title == false, então não atualiza dados de novos marcadores
 		var geocoder = new google.maps.Geocoder();
 		function geocodePosition(title, pos) {
 			
@@ -206,7 +213,7 @@
 				markersData[title]['lng'] = pos.lng();
 			}
 			
-			//ObtÃ©m o endereÃ§o das coordenadas
+			//Obtém o endereço das coordenadas
 			geocoder.geocode({
 				latLng: pos
 			}, function(responses) {
@@ -215,7 +222,7 @@
 					if (title)
 						markersData[title]['address'] = responses[0].formatted_address;
 				} else {
-					updateMarkerAddress('ImpossÃ­vel determinar o endereÃ§o desta localizaÃ§Ã£o.');
+					updateMarkerAddress('Impossível determinar o endereço desta localização.');
 					if (title)
 						markersData[title]['address'] = "erro";
 				}
@@ -227,7 +234,7 @@
 			document.getElementById('markerStatus').innerHTML = str;
 		}
 		 
-		//Atualiza a posiÃ§Ã£o do marcador
+		//Atualiza a posição do marcador
 		function updateMarkerPosition(latLng) {
 			document.getElementById('info').innerHTML = [
 				latLng.lat(),
@@ -235,7 +242,7 @@
 			].join(', ');
 		}
 		 
-		//Atualiza o endereÃ§o do marcador
+		//Atualiza o endereço do marcador
 		function updateMarkerAddress(str) {
 			document.getElementById('address').innerHTML = str;
 		}
@@ -248,7 +255,7 @@
 		
 		
 		/////////////////////////////////////////////
-		// FunÃ§Ãµes de Busca de EndereÃ§os
+		// Funções de Busca de Endereços
 		/////////////////////////////////////////////
 		function geocode() {
 			var address = document.getElementById("address2").value;
@@ -267,10 +274,10 @@
 		
 		
 		/////////////////////////////////////////////
-		// FunÃ§Ãµes Ajax
+		// Funções Ajax
 		/////////////////////////////////////////////
 		
-		//Cria um objeto para requisiÃ§Ãµes XML
+		//Cria um objeto para requisições XML
 		function getXMLObject() {
 			var xmlHttp = false;
 			try {
@@ -292,7 +299,7 @@
 			 
 		var xmlhttp = new getXMLObject();
 		
-		//Executa a requisiÃ§Ã£o ajax
+		//Executa a requisição ajax
 		function ajaxFunction(data) {
 			var getdate = new Date();  //Used to prevent caching during ajax call
 			if (xmlhttp) {
@@ -338,28 +345,30 @@
 			
 			return false;
 		}
+
 		//]]>
 	</script>
 	</head>
-	<!-- Executa a funÃ§Ã£o load() ao carregar o corpo do documento -->
+
+	<!-- Executa a função load() ao carregar o corpo do documento -->
 	<body onload="load()">
 	
-		<!-- Div onde serÃ¡ carregado o mapa -->
+		<!-- Div onde será carregado o mapa -->
 		<div id="map"></div>
 	
-		<!-- InÃ­cio Painel de InformaÃ§Ãµes -->
+		<!-- Início Painel de Informações -->
 		<div id="infoPanel"> 
 		
 			<div id="block">
-				Buscar EndereÃ§o: <input type="text" id="address2"/><input type="button" value="Go" onclick="geocode()" />
+				Buscar Endereço: <input type="text" id="address2"/><input type="button" value="Go" onclick="geocode()" />
 			</div>
 		
 			<div id="block">
 				<b>Status do marcador:</b> 
 				<div id="markerStatus"><i>Adicione um novo marcador.</i></div> 
-				<b>PosiÃ§Ã£o atual:</b> 
+				<b>Posição atual:</b> 
 				<div id="info"></div> 
-				<b>EndereÃ§o:</b> 
+				<b>Endereço:</b> 
 				<div id="address"></div> 
 			</div>
 			
@@ -371,7 +380,7 @@
 					<select id="type">
 						<option value="aeroporto">Aeroporto</option>
 						<option value="bar">Bar</option>
-						<option value="onibus">Ã”nibus</option>
+						<option value="onibus">Ônibus</option>
 						<option value="cafeteria">Cafeteria</option>
 						<option value="gasolina">Posto de Gasolina</option>
 						<option value="hotel">Hotel</option>
@@ -386,7 +395,7 @@
 				<p id="message"></p> 
 			</div>
 		</div> 
-		<!-- Fim Painel de InformaÃ§Ãµes -->
+		<!-- Fim Painel de Informações -->
 		
 		
 	</body>
