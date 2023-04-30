@@ -1,10 +1,8 @@
 <?php
 
-use \App\Http\Roteador;
 use \App\Http\Resposta;
 use \App\Controller\Paginas;
 
-$objetoRoteador = new Roteador(URL);
 
 // Rota home
 $objetoRoteador->get('/', [
@@ -15,8 +13,15 @@ $objetoRoteador->get('/', [
 
 // Rota ecopontos
 $objetoRoteador->get('/ecopontos', [
-  function(){
-    return new Resposta(200, Paginas\Ecopontos::ecopontosPegar());
+  function($requisicao){
+    return new Resposta(200, Paginas\Ecopontos::ecopontosPegar($requisicao));
+  }
+]);
+
+// Rota ecopontos (post - create)
+$objetoRoteador->post('/ecopontos', [
+  function($requisicao){
+    return new Resposta(200, Paginas\Ecopontos::ecopontosCadastrar($requisicao));
   }
 ]);
 

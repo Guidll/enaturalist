@@ -4,7 +4,6 @@ namespace App\Http;
 
 use \Closure;
 use \Exception;
-use Reflection;
 use \ReflectionFunction;
 
 class Roteador
@@ -22,7 +21,7 @@ class Roteador
 
   public function __construct($url)
   {
-    $this->requisicao = new Requisicao();
+    $this->requisicao = new Requisicao($this);
     $this->url = $url;
     $this->prefixoDefinir();
   }
@@ -116,7 +115,7 @@ class Roteador
 
   private function rotaPegar()
   {
-    $uri = $this->uriPegar();
+    $uri = $this->uriRetornar();
 
     $metodoHttp = $this->requisicao->httpMetodoPegar();
 
@@ -128,7 +127,7 @@ class Roteador
         if (isset($metodos[$metodoHttp])) {
           // Remove o primeiro item que é desnecessario
           unset($validos[0]);
-          
+
           $chave = $metodos[$metodoHttp]['variaveis'];
           $metodos[$metodoHttp]['variaveis'] = array_combine($chave, $validos);
           $metodos[$metodoHttp]['variaveis']['requisicao'] = $this->requisicao;
@@ -144,11 +143,17 @@ class Roteador
   }
 
 
-  private function uriPegar()
+  private function uriRetornar()
   {
     $uri = $this->requisicao->uriPegar();
     $uriTratada = strlen($this->prefixo) ? explode($this->prefixo, $uri) : [uri];
 
     return end($uriTratada);
+  }
+
+
+  public function urlAtualPegar()
+  {
+    return $this->url . $this->uriRetornar();
   }
 }
