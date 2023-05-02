@@ -35,6 +35,9 @@ $objetoRoteador = new Roteador(URL);
 // Inclui o gerenciamento de conteudo das rotas
 include __DIR__ . '/rotas/Paginas.php';
 
+// Inclui o gerenciamento do admin
+include __DIR__ . '/rotas/Admin.php';
+
 // Exibi o conteuda da rota acessada
 $objetoRoteador->executar()->respostaEnviar();
 // --- </Execucao> ---

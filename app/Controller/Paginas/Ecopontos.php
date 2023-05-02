@@ -22,8 +22,6 @@ class Ecopontos extends Paginas
   public static function ecopontosCadastrar($requisicao) 
   {
     $dadosPost = $requisicao->urlParametrosPostPegar();
-    print_r($dadosPost);
-
     $objEcoponto = new EntidadeEcopontos;
     $objEcoponto->endereco = $dadosPost['endereco'];
     $objEcoponto->tag = $dadosPost['tag'];

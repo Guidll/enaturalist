@@ -156,4 +156,12 @@ class Roteador
   {
     return $this->url . $this->uriRetornar();
   }
+
+  public function redirecionar($rota)
+  {
+    $url = $this->url . $rota;
+
+    header('location:' . $url);
+    exit;
+  }
 }
