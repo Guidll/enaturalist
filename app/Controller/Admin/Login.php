@@ -43,16 +43,15 @@ class Login extends Pagina
     // Sessao login
     SessaoLogin::login($objUsuario);
 
-    self::usuarioVerificar($requisicao);
-  }
+    $usuarioCnpj = Usuario::getUsuarioCnpj($_SESSION['admin']['usuario']['id']);
+    // echo '<pre>';
+    // print_r($usuarioCnpj);
+    // print_r(empty($usuarioCnpj));
+    // print_r(isset($usuarioCnpj));
+    // echo '</pre>';
+    // exit;
 
-
-  // Verifica que tipo de usuário logou
-  public static function usuarioVerificar($requisicao)
-  {
-    $usuarioCnpj = Usuario::getUsuarioCnpj();
-
-    if (! $usuarioCnpj) {
+    if (! isset($usuarioCnpj) or empty($usuarioCnpj)) {
       // Usuario pessoal fisica
       return $requisicao->roteadorPegar()->redirecionar('/admin');
     }
@@ -60,6 +59,13 @@ class Login extends Pagina
       // Usuario pessoal juridica 
       return $requisicao->roteadorPegar()->redirecionar('/admin/instituicao');
     }
+  }
+
+
+  // Verifica que tipo de usuário logou
+  public static function usuarioVerificar($requisicao)
+  {
+    
   }
 
 

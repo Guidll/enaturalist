@@ -18,13 +18,10 @@ class Doacao extends Usuario
 
   public function cadastrar()
   {
-    // Modificar
-    $this->id_usuario = 123;
-    // Modificar
     $this->data = date('Y-m-d H:i:s');
 
     $this->id = (new Banco('doacao'))->insert([
-      'id_usuario' => $this->id_usuario,
+      'id_usuario' => $_SESSION['admin']['usuario']['id'],
       'material' => $this->material,
       'quantidade' => $this->quantidade,
     ]);

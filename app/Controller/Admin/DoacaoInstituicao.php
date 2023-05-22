@@ -40,7 +40,7 @@ class DoacaoInstituicao extends Pagina
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao-instituicao');
     }
 
-    $conteudo = View::renderizar('admin/doacao-instituicao/editar', [
+    $conteudo = View::renderizar('admin/doacao/editar-instituicao', [
       'material' => $objDoacao->material,
       'quantidade' => $objDoacao->quantidade,
     ]);
@@ -62,7 +62,7 @@ class DoacaoInstituicao extends Pagina
     $objDoacao->quantidade = $dadosPost['quantidade'] ?? $objDoacao->quantidade;
     $objDoacao->atualizar();
 
-    $requisicao->roteadorPegar()->redirecionar('/admin/doacao-instituicao/' . $objDoacao->id . '/editar');
+    $requisicao->roteadorPegar()->redirecionar('/admin/doacao-instituicao/' . $objDoacao->id . '/editar-instituicao');
   }
 
 
@@ -74,7 +74,7 @@ class DoacaoInstituicao extends Pagina
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao-instituicao');
     }
 
-    $conteudo = View::renderizar('admin/doacao-instituicao/excluir', [
+    $conteudo = View::renderizar('admin/doacao/excluir-instituicao', [
       'material' => $objDoacao->material,
       'quantidade' => $objDoacao->quantidade,
     ]);
@@ -103,7 +103,9 @@ class DoacaoInstituicao extends Pagina
   {
     $itens = '';
 
-    $quantidadeTotal = EntidadeDoacao::doacaoPegar(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+    $usuarioId = EntidadeUsuario::getUsuarioId($_SESSION['admin']['usuario']['id']);
+
+    $quantidadeTotal = EntidadeDoacao::doacaoPegar('id_usuario = ' . $usuarioId, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
 
     $urlParametros = $requisicao->urlParametrosPegar();
 
@@ -111,21 +113,20 @@ class DoacaoInstituicao extends Pagina
 
     $objPaginacao = new Paginacao($quantidadeTotal, $paginaAtual, 3);
 
-    $resultado = EntidadeDoacao::doacaoPegar(null, 'id DESC', $objPaginacao->getLimit());
+    $resultado = EntidadeDoacao::doacaoPegar('id_usuario = ' . $usuarioId, 'id DESC', $objPaginacao->getLimit());
 
     while($objDoacao = $resultado->fetchObject(EntidadeDoacao::class)) {
       $usuarioEndereco = EntidadeUsuario::getUsuarioEndereco();
       $usuarioCelular = EntidadeUsuario::getUsuarioCelular();
 
       $itens .= View::renderizar('admin/doacao/itens-instituicao', [
+        'id' => $objDoacao->id,
         'material' => $objDoacao->material,
         'quantidade' => $objDoacao->quantidade,
         'endereco' => $usuarioEndereco,
         'celular' => $usuarioCelular,
       ]);
     }
-
-    // print_r($itens);
 
     return $itens;
   }

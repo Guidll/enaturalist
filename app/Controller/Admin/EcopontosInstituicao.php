@@ -21,7 +21,7 @@ class EcopontosInstituicao extends Pagina
   }
 
 
-  public static function ecopontosCadastrar($requisicao) 
+  public static function setEcopontos($requisicao) 
   {
     $dadosPost = $requisicao->urlParametrosPostPegar();
     $objEcoponto = new EntidadeEcopontos;
@@ -40,12 +40,12 @@ class EcopontosInstituicao extends Pagina
       $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao');
     }
 
-    $conteudo = View::renderizar('admin/ecopontos/editar', [
+    $conteudo = View::renderizar('admin/ecopontos/editar-instituicao', [
       'endereco' => $objEcoponto->endereco,
       'tag' => $objEcoponto->tag,
     ]);
 
-    return parent::getPainel('Editar ecopontos', $conteudo, 'ecopontos-instituicao');
+    return parent::getPainelInstituicao('Editar ecopontos', $conteudo, 'ecopontos-instituicao');
   }
 
 
@@ -54,7 +54,7 @@ class EcopontosInstituicao extends Pagina
     $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
     
     if (! $objEcoponto instanceof EntidadeEcopontos) {
-      $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
+      $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao');
     }
 
     $dadosPost = $requisicao->urlParametrosPostPegar();
@@ -62,7 +62,7 @@ class EcopontosInstituicao extends Pagina
     $objEcoponto->tag = $dadosPost['tag'] ?? $objEcoponto->tag;
     $objEcoponto->atualizar();
 
-    $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos/' . $objEcoponto->id . '/editar');
+    $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao/' . $objEcoponto->id . '/editar');
   }
 
 
@@ -74,12 +74,12 @@ class EcopontosInstituicao extends Pagina
       $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao');
     }
 
-    $conteudo = View::renderizar('admin/ecopontos/excluir', [
+    $conteudo = View::renderizar('admin/ecopontos/excluir-instituicao', [
       'endereco' => $objEcoponto->endereco,
       'tag' => $objEcoponto->tag,
     ]);
 
-    return parent::getPainel('Excluir ecopontos', $conteudo, 'ecopontos');
+    return parent::getPainelInstituicao('Excluir ecopontos', $conteudo, 'ecopontos');
   }
 
 
@@ -96,14 +96,14 @@ class EcopontosInstituicao extends Pagina
     $objEcoponto->tag = $dadosPost['tag'] ?? $objEcoponto->tag;
     $objEcoponto->excluir($id);
 
-    $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
+    $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao');
   }
 
   private static function ecopontosItensPegar($requisicao, &$objPaginacao)
   {
     $itens = '';
 
-    $usuarioId = EntidadeUsuario::getUsuarioId();
+    $usuarioId = EntidadeUsuario::getUsuarioId($_SESSION['admin']['usuario']['id']);
 
     $quantidadeTotal = EntidadeEcopontos::ecopontosPegar('id_usuario = ' . $usuarioId, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
 
@@ -117,6 +117,7 @@ class EcopontosInstituicao extends Pagina
 
     while($objEcoponto = $resultado->fetchObject(EntidadeEcopontos::class)) {
       $itens .= View::renderizar('admin/ecopontos/itens-instituicao', [
+        'id' => $objEcoponto->id,
         'endereco' => $objEcoponto->endereco,
         'tag' => $objEcoponto->tag,
       ]);

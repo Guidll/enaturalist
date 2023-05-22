@@ -3,6 +3,7 @@
 namespace App\Model\Entidades;
 
 use \App\Controller\Utilidades\Banco;
+use \App\Model\Entidades\Usuario as EntidadeUsuario;
 
 class Ecopontos
 {
@@ -18,14 +19,12 @@ class Ecopontos
 
 
   public function cadastrar()
-  {
-    // Modificar
-    $this->id_usuario = 123;
-    // Modificar
+  { 
     $this->data = date('Y-m-d H:i:s');
 
+
     $this->id = (new Banco('ecopontos'))->insert([
-      'id_usuario' => $this->id_usuario,
+      'id_usuario' => $_SESSION['admin']['usuario']['id'],
       'endereco' => $this->endereco,
       'tag' => $this->tag,
     ]);

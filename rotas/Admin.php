@@ -160,6 +160,15 @@ $objetoRoteador->get('/admin/ecopontos-instituicao', [
     return new Resposta(200, Admin\EcopontosInstituicao::getEcopontos($requisicao));
   }
 ]);
+// Rota admin ecopontos instituicao
+$objetoRoteador->post('/admin/ecopontos-instituicao', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao){
+    return new Resposta(200, Admin\EcopontosInstituicao::setEcopontos($requisicao));
+  }
+]);
 // Editar
 $objetoRoteador->get('/admin/ecopontos-instituicao/{id}/editar', [
   'middlewares' => [
@@ -273,7 +282,7 @@ $objetoRoteador->post('/admin/doacao-instituicao', [
   }
 ]);
 // Editar
-$objetoRoteador->get('/admin/doacao-instituicao/{id}/editar', [
+$objetoRoteador->get('/admin/doacao-instituicao/{id}/editar-instituicao', [
   'middlewares' => [
     'admin-login',
   ],
@@ -282,7 +291,7 @@ $objetoRoteador->get('/admin/doacao-instituicao/{id}/editar', [
   }
 ]);
 
-$objetoRoteador->post('/admin/doacao-instituicao/{id}/editar', [
+$objetoRoteador->post('/admin/doacao-instituicao/{id}/editar-instituicao', [
   'middlewares' => [
     'admin-login',
   ],
@@ -291,7 +300,7 @@ $objetoRoteador->post('/admin/doacao-instituicao/{id}/editar', [
   }
 ]);
 // Excluir
-$objetoRoteador->get('/admin/doacao-instituicao/{id}/excluir', [
+$objetoRoteador->get('/admin/doacao-instituicao/{id}/excluir-instituicao', [
   'middlewares' => [
     'admin-login',
   ],
@@ -300,7 +309,7 @@ $objetoRoteador->get('/admin/doacao-instituicao/{id}/excluir', [
   }
 ]);
 
-$objetoRoteador->post('/admin/doacao-instituicao/{id}/excluir', [
+$objetoRoteador->post('/admin/doacao-instituicao/{id}/excluir-instituicao', [
   'middlewares' => [
     'admin-login',
   ],

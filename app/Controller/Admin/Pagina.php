@@ -72,6 +72,7 @@ class Pagina
 
     return View::renderizar('admin/menu/navegacao', [
       'links' => $links,
+      'usuario' => $_SESSION['admin']['usuario']['nome'],
     ]);
   }
 
@@ -101,6 +102,7 @@ class Pagina
 
     return View::renderizar('admin/menu/navegacao', [
       'links' => $links,
+      'usuario' => $_SESSION['admin']['usuario']['nome'],
     ]);
   }
 }

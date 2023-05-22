@@ -14,6 +14,8 @@ class Usuario
 
   public $cpf;
 
+  public $cnpj;
+
   public $senha;
 
   public $celular;
@@ -39,7 +41,7 @@ class Usuario
       'nome' => $this->nome,
       'email' => $this->email,
       'senha' => $this->senha,
-      'cpf' => $this->cpf,
+      'cpf' => $this->cpf ?? '',
       'cnpj' => $this->cnpj ?? '',
       'endereco' => $this->endereco,
       'celular' => $this->celular,
@@ -50,7 +52,7 @@ class Usuario
 
 
   public static function getUsuarioId() {
-    return self::getUsuario()->fetchObject(self::class)->id;
+    return self::getUsuario('id = ' . $_SESSION['admin']['usuario']['id'])->fetchObject(self::class)->id;
   }
   
   
@@ -69,7 +71,7 @@ class Usuario
   }
 
 
-  public static function getUsuarioCnpj() {
-    return self::getUsuario()->fetchObject(self::class)->cnpj;
+  public static function getUsuarioCnpj($id) {
+    return self::getUsuario('id = ' . $id)->fetchObject(self::class)->cnpj;
   }
 }
