@@ -6,6 +6,7 @@ use \App\Http\Roteador;
 use \App\Controller\Utilidades\View;
 use \App\Controller\Utilidades\Ambiente;
 use \App\Controller\Utilidades\Banco;
+use \App\Http\Middleware\Queue as MiddlewareFila;
 
 
 
@@ -25,6 +26,16 @@ Banco::config(
   getenv('DB_PASS'),
   getenv('DB_PORT'),
 );
+
+MiddlewareFila::setMapa([
+  'maintenance' => \App\Http\Middleware\Maintenance::class,
+  'admin-deslogado' => \App\Http\Middleware\AdminDeslogado::class,
+  'admin-login' => \App\Http\Middleware\AdminLogin::class,
+]);
+
+MiddlewareFila::setPadrao([
+  'maintenance',
+]);
 // --- </Includes> ---
 
 

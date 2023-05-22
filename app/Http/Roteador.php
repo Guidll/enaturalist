@@ -5,6 +5,7 @@ namespace App\Http;
 use \Closure;
 use \Exception;
 use \ReflectionFunction;
+use \App\Http\Middleware\Queue as MiddlewareFila;
 
 class Roteador
 {
@@ -45,6 +46,8 @@ class Roteador
         continue;
       }
     }
+
+    $parametros['middlewares'] = $parametros['middlewares'] ?? [];
 
     // Variaveis de rota
     $parametros['variaveis'] = [];
@@ -105,7 +108,7 @@ class Roteador
         $argumentos[$nome] = $rota['variaveis'][$nome] ?? '';
       }
 
-      return call_user_func_array($rota['controller'], $argumentos);
+      return (new MiddlewareFila($rota['middlewares'],$rota['controller'], $argumentos))->proximo($this->requisicao);
     }
     catch (Exception $e) {
       return new Resposta($e->getCode(), $e->getMessage());

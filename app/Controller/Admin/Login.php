@@ -10,7 +10,7 @@ class Login extends Pagina
 {
   public static function loginPegar($requisicao, $mensagemErro = null)
   {
-    $status = ! is_null($mensagemErro) ? View::renderizar('admin/login-erro', ['mensagem' => $mensagemErro,]) : '';
+    $status = ! is_null($mensagemErro) ? Alerta::getErro($mensagemErro) : '';
 
     $conteudo = View::renderizar('admin/login', [
       'status' => $status,
@@ -43,10 +43,32 @@ class Login extends Pagina
     // Sessao login
     SessaoLogin::login($objUsuario);
 
-    $requisicao->roteadorPegar()->redirecionar('/admin');
+    self::usuarioVerificar($requisicao);
+  }
 
-    // $conteudo = View::renderizar('admin/login', []);
 
-    // return parent::paginaPegar('Login', $conteudo);
+  // Verifica que tipo de usuário logou
+  public static function usuarioVerificar($requisicao)
+  {
+    $usuarioCnpj = Usuario::getUsuarioCnpj();
+
+    if (! $usuarioCnpj) {
+      // Usuario pessoal fisica
+      return $requisicao->roteadorPegar()->redirecionar('/admin');
+    }
+    else {
+      // Usuario pessoal juridica 
+      return $requisicao->roteadorPegar()->redirecionar('/admin/instituicao');
+    }
+  }
+
+
+  // Desloga o usuario
+  public static function setLogout($requisicao) {
+    // Destroi sessao login
+    SessaoLogin::logout();
+
+    // Redireciona o usuario para o login
+    $requisicao->roteadorPegar()->redirecionar('/admin/login');
   }
 }

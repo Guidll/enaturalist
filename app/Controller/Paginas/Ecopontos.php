@@ -31,6 +31,18 @@ class Ecopontos extends Paginas
   }
 
 
+  // public static function ecopontosRemover($requisicao) 
+  // {
+  //   // $dadosPost = $requisicao->urlParametrosPostPegar();
+  //   $objEcoponto = new EntidadeEcopontos;
+  //   // $objEcoponto->endereco = $dadosPost['endereco'];
+  //   // $objEcoponto->tag = $dadosPost['tag'];
+  //   $objEcoponto->remover();
+
+  //   return self::ecopontosPegar($requisicao);
+  // }
+
+
   private static function ecopontosItensPegar($requisicao, &$objPaginacao)
   {
     $itens = '';

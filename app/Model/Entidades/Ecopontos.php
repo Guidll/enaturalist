@@ -16,6 +16,7 @@ class Ecopontos
 
   public $data;
 
+
   public function cadastrar()
   {
     // Modificar
@@ -32,8 +33,29 @@ class Ecopontos
     return true;
   }
 
+
+  public function atualizar()
+  {
+    return (new Banco('ecopontos'))->update('id = '. $this->id, [
+      'endereco' => $this->endereco,
+      'tag' => $this->tag,
+    ]);
+  }
+
+
+  public function excluir()
+  {
+    return (new Banco('ecopontos'))->delete('id = ' . $this->id);
+  }
+
+
   public static function ecopontosPegar($where = null, $order = null, $limit = null, $field = '*')
   {
     return (new Banco('ecopontos'))->select($where,$order,$limit,$field);
+  }
+
+  
+  public static function getEcopontoPorId($id) {
+    return self::ecopontosPegar('id = ' . $id)->fetchObject(self::class);
   }
 }

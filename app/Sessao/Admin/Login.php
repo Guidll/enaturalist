@@ -13,6 +13,7 @@ class Login
     }
   }
 
+
   public static function login($objUsuario)
   {
     self::inicio();
@@ -23,6 +24,30 @@ class Login
       'nome' => $objUsuario->nome,
       'email' => $objUsuario->email,
     ];
+
+    return true;
+  }
+
+
+  // Verifica se usuario esta logado
+  public static function logado()
+  {
+    // Inicia sessao
+    self::inicio();
+
+    // Verifica
+    return isset($_SESSION['admin']['usuario']['id']);
+  }
+
+
+  // Desloga usuario
+  public static function logout()
+  {
+    // Inicia sessao
+    self::inicio();
+
+    // Desloga
+    unset($_SESSION['admin']['usuario']);
 
     return true;
   }
