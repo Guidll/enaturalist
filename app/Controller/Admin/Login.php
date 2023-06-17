@@ -46,14 +46,12 @@ class Login extends Pagina
     if ($objUsuario instanceof Usuario) {
       // Usuario pessoal fisica
       SessaoLogin::login($objUsuario);
-      print_r(SessaoLogin);
 
       return $requisicao->roteadorPegar()->redirecionar('/admin');
     }
     else {
       // Usuario pessoal juridica
       SessaoLogin::login($objInsituicao);
-      print_r(SessaoLogin);
 
       return $requisicao->roteadorPegar()->redirecionar('/admin/instituicao');
     }

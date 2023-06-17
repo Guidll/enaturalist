@@ -14,15 +14,15 @@ class Login
   }
 
 
-  public static function login($objUsuario)
+  public static function login($entidade)
   {
     self::inicio();
 
     // Defini a sessao do usuario
     $_SESSION['admin']['usuario'] = [
-      'id' => $objUsuario->id,
-      'nome' => $objUsuario->nome,
-      'email' => $objUsuario->email,
+      'id' => $entidade->getId(),
+      'nome' => $entidade->getNome(),
+      'email' => $entidade->getEmail(),
     ];
 
     return true;
