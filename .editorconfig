@@ -1,0 +1,7 @@
+# Remove espaços vazios no final das linhas
+[*]
+trim_trailing_whitespace = true
+
+# Remove espaços vazios no final das linhas somente para arquivos Markdown
+[*.md]
+trim_trailing_whitespace = true

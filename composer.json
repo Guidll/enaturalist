@@ -4,5 +4,10 @@
     "psr-4": {
       "App\\": "app/"
     }
-  } 
+  },
+  "require": {
+    "phpmailer/phpmailer": "^6.8",
+    "league/oauth2-client": "^2.7",
+    "league/oauth2-google": "^4.0"
+  }
 }

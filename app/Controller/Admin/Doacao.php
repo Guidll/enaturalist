@@ -7,6 +7,7 @@ use \App\Controller\Paginas\Paginas;
 use \App\Controller\Utilidades\Paginacao;
 use \App\Model\Entidades\Doacao as EntidadeDoacao;
 use \App\Model\Entidades\Usuario as EntidadeUsuario;
+use \App\Model\Entidades\Endereco as EntidadeEndereco;
 
 class Doacao extends Pagina
 {
@@ -21,7 +22,7 @@ class Doacao extends Pagina
   }
 
 
-  public static function setDoacao($requisicao) 
+  public static function setDoacao($requisicao)
   {
     $dadosPost = $requisicao->urlParametrosPostPegar();
     $objDoacao = new EntidadeDoacao;
@@ -31,11 +32,11 @@ class Doacao extends Pagina
 
     return self::getDoacao($requisicao);
   }
-  
-  public static function getDoacaoEditar($requisicao, $id) 
+
+  public static function getDoacaoEditar($requisicao, $id)
   {
     $objDoacao = EntidadeDoacao::getDoacaoPorId($id);
-    
+
     if (! $objDoacao instanceof EntidadeDoacao) {
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
     }
@@ -49,10 +50,10 @@ class Doacao extends Pagina
   }
 
 
-  public static function setDoacaoEditar($requisicao, $id) 
+  public static function setDoacaoEditar($requisicao, $id)
   {
     $objDoacao = EntidadeDoacao::getDoacaoPorId($id);
-    
+
     if (! $objDoacao instanceof EntidadeDoacao) {
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
     }
@@ -66,10 +67,10 @@ class Doacao extends Pagina
   }
 
 
-  public static function getDoacaoExcluir($requisicao, $id) 
+  public static function getDoacaoExcluir($requisicao, $id)
   {
     $objDoacao = EntidadeDoacao::getDoacaoPorId($id);
-    
+
     if (! $objDoacao instanceof EntidadeDoacao) {
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
     }
@@ -83,10 +84,10 @@ class Doacao extends Pagina
   }
 
 
-  public static function setDoacaoExcluir($requisicao, $id) 
+  public static function setDoacaoExcluir($requisicao, $id)
   {
     $objDoacao = EntidadeDoacao::getDoacaoPorId($id);
-    
+
     if (! $objDoacao instanceof EntidadeDoacao) {
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
     }
@@ -102,13 +103,14 @@ class Doacao extends Pagina
   private static function doacaoItensPegar($requisicao, &$objPaginacao)
   {
     $itens = '';
-    
+
     $usuarioId = EntidadeUsuario::getUsuarioId();
-    $usuarioEndereco = EntidadeUsuario::getUsuarioEndereco();
-    $usuarioCelular = EntidadeUsuario::getUsuarioCelular();
+    $usuarioCelular = EntidadeUsuario::getUsuarioCelularPorId($usuarioId);
+
+    $objEndereco = EntidadeEndereco::consultarEnderecoPorIdUsuario($usuarioId);
+    $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
 
     $quantidadeTotal = EntidadeDoacao::doacaoPegar('id_usuario = ' . $usuarioId, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-
 
     $urlParametros = $requisicao->urlParametrosPegar();
 
@@ -120,11 +122,11 @@ class Doacao extends Pagina
 
     while($objDoacao = $resultado->fetchObject(EntidadeDoacao::class)) {
       $itens .= View::renderizar('admin/doacao/itens', [
-        'id' => $objDoacao->id,
+        'id' => $objDoacao->getId(),
         'id_usuario' => $usuarioId,
-        'material' => $objDoacao->material,
-        'quantidade' => $objDoacao->quantidade,
-        'endereco' => $usuarioEndereco,
+        'material' => $objDoacao->getMaterial(),
+        'quantidade' => $objDoacao->getQuantidade(),
+        'endereco' => $endereco,
         'celular' => $usuarioCelular,
       ]);
     }

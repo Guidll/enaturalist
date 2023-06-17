@@ -1,4 +1,4 @@
-<main class="relative min-h-screen h-full w-full grid place-content-center z-10 mx-4">
+<main class="relative min-h-screen grid place-content-center z-10 mx-4">
   <section class="grid grid-cols-4 w-full max-w-6xl bg-white rounded-xl overflow-hidden">
     <!-- Imagem -->
     <picture class="col-span-2 rounded-md overflow-hidden">
@@ -12,44 +12,102 @@
           <div class="mb-4 mx-auto w-max p-6 border border-solid border-gray-200 bg-gray-50 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-10 text-blue-500">
               <path d="M21.721 12.752a9.711 9.711 0 00-.945-5.003 12.754 12.754 0 01-4.339 2.708 18.991 18.991 0 01-.214 4.772 17.165 17.165 0 005.498-2.477zM14.634 15.55a17.324 17.324 0 00.332-4.647c-.952.227-1.945.347-2.966.347-1.021 0-2.014-.12-2.966-.347a17.515 17.515 0 00.332 4.647 17.385 17.385 0 005.268 0zM9.772 17.119a18.963 18.963 0 004.456 0A17.182 17.182 0 0112 21.724a17.18 17.18 0 01-2.228-4.605zM7.777 15.23a18.87 18.87 0 01-.214-4.774 12.753 12.753 0 01-4.34-2.708 9.711 9.711 0 00-.944 5.004 17.165 17.165 0 005.498 2.477zM21.356 14.752a9.765 9.765 0 01-7.478 6.817 18.64 18.64 0 001.988-4.718 18.627 18.627 0 005.49-2.098zM2.644 14.752c1.682.971 3.53 1.688 5.49 2.099a18.64 18.64 0 001.988 4.718 9.765 9.765 0 01-7.478-6.816zM13.878 2.43a9.755 9.755 0 016.116 3.986 11.267 11.267 0 01-3.746 2.504 18.63 18.63 0 00-2.37-6.49zM12 2.276a17.152 17.152 0 012.805 7.121c-.897.23-1.837.353-2.805.353-.968 0-1.908-.122-2.805-.353A17.151 17.151 0 0112 2.276zM10.122 2.43a18.629 18.629 0 00-2.37 6.49 11.266 11.266 0 01-3.746-2.504 9.754 9.754 0 016.116-3.985z" />
-            </svg>                      
+            </svg>
           </div>
           <h1 class="text-4xl mb-2">Bem-vindo!</h1>
           <p class="text-gray-500 text-sm">Para continuar, por favor, faça seu cadastro. Esperamos que você tenha uma excelente experiência!</p>
         </div>
 
-        <div class="mb-12 grid gap-4">
+        <div data-cadastro-etapa="1" class="mb-12 grid gap-4">
           <div class="grid relative">
-            <label for="nome" class="mb-1 pl-2">Nome</label>
-            <input type="text" name="nome" id="nome" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+            <label for="nome" class="mb-1 pl-2">Nome da Instuição</label>
+            <input type="text" name="nome" id="nome" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
           </div>
           <div class="grid relative">
             <label for="cnpj" class="mb-1 pl-2">CNPJ</label>
-            <input type="number" name="cnpj" id="cnpj" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+            <input type="text" name="cnpj" id="cnpj" required oninput="cnpjFormatar()" maxlength="18" class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
           </div>
           <div class="grid relative">
             <label for="email" class="mb-1 pl-2">E-mail</label>
-            <input type="email" name="email" id="email" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+            <input type="email" name="email" id="email" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
           </div>
           <div class="grid relative">
             <label for="senha" class="mb-1 pl-2">Senha</label>
-            <input type="password" name="senha" id="senha" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+            <input type="password" name="senha" id="senha" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
           </div>
           <div class="grid relative">
             <label for="celular" class="mb-1 pl-2">Celular</label>
-            <input type="text" name="celular" id="celular" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+            <input type="text" name="celular" id="celular" required oninput="celularFormatar()" maxlength="14" class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
           </div>
-          <div class="grid relative">
-            <label for="endereco" class="mb-1 pl-2">Endereço</label>
-            <input type="text" name="endereco" id="endereco" class="pl-8 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
-          </div>
-          {{status}}
+
+          <button type="button" onclick="cadastroAvancar()" class="bg-blue-500 font-bold text-white py-2.5 px-4 rounded-full transition-colors hover:bg-blue-600 js-cadastro-btn-etapa">Continuar</button>
         </div>
 
-        <button class="bg-blue-500 font-bold text-white py-2.5 px-4 rounded-full transition-colors hover:bg-blue-600">Cadastrar</button>
+        <div data-cadastro-etapa="2" class="mb-12 grid gap-4 hidden">
+          <button type="button" onclick="cadastroVoltar()" class="">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/></svg>
+          </button>
+          <div class="grid relative">
+            <label for="cep" class="mb-1 pl-2">CEP</label>
+            <input type="text" name="cep" id="cep" required oninput="cepFormatar()" maxlength="9" class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+          </div>
+          <div class="grid relative">
+            <label for="rua" class="mb-1 pl-2">Rua</label>
+            <input type="text" name="rua" id="rua" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+          </div>
+          <div class="grid relative">
+            <label for="numero" class="mb-1 pl-2">Número</label>
+            <input type="text" name="numero" id="numero" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+          </div>
+          <div class="grid relative">
+            <label for="bairro" class="mb-1 pl-2">Bairro</label>
+            <input type="text" name="bairro" id="bairro" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+          </div>
+          <div class="grid relative">
+            <label for="cidade" class="mb-1 pl-2">Cidade</label>
+            <input type="text" name="cidade" id="cidade" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+          </div>
+          <div class="grid relative">
+            <label for="estado" class="mb-1 pl-2">Estado</label>
+            <select name="estado" id="estado" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+              <option value="">Selecione um estado</option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+            </select>
+          </div>
+          <div class="grid">
+            <button type="submit" class="bg-blue-500 font-bold text-white py-2.5 px-4 rounded-full transition-colors hover:bg-blue-600">Cadastrar</button>
+          </div>
+        </div>
+
+        {{status}}
 
         <a href="{{URL}}/admin/cadastro" class="mt-4 text-center underline">É pessoa física? faça seu cadastro aqui.</a>
-
         <a href="{{URL}}/admin/login" class="mt-4 text-center underline">Já tem conta? faça seu login.</a>
       </form>
     </div>
@@ -75,6 +133,32 @@
     <path fill="#0EA5E9" d="M67.2,-21C73.5,-2.5,55.6,24.7,33.7,38.8C11.8,52.9,-14,53.9,-36,40.1C-58.1,26.4,-76.3,-2.2,-69.6,-21.1C-63,-40.1,-31.5,-49.5,-0.5,-49.4C30.4,-49.2,60.9,-39.4,67.2,-21Z" transform="translate(100 100)" />
   </svg>
 </div>
+<script defer src="../src/js/formulario.js"></script>
+<script>
+  function cadastroAvancar() {
+    const $cadastroEtapa1 = document.querySelector('[data-cadastro-etapa="1"]')
+    const $cadastroEtapa2 = document.querySelector('[data-cadastro-etapa="2"]')
+    $cadastroEtapa1.classList.add('fade-out')
+
+    setTimeout(() => {
+      $cadastroEtapa1.classList.add('hidden')
+      $cadastroEtapa2.classList.remove('hidden')
+      $cadastroEtapa2.classList.add('fade-in')
+    }, 1000)
+  }
+  function cadastroVoltar() {
+    const $cadastroEtapa1 = document.querySelector('[data-cadastro-etapa="1"]')
+    const $cadastroEtapa2 = document.querySelector('[data-cadastro-etapa="2"]')
+    $cadastroEtapa1.classList.remove('fade-out')
+    $cadastroEtapa1.classList.add('fade-in')
+
+    setTimeout(() => {
+      $cadastroEtapa1.classList.remove('hidden')
+      $cadastroEtapa2.classList.add('hidden')
+      $cadastroEtapa2.classList.remove('fade-in')
+    }, 1000)
+  }
+</script>
 <style>
   input:focus ~ svg{color:#3b82f6;}
 
@@ -90,5 +174,17 @@
     60%{transform:translateX(-1rem) translateY(1rem);}
     80%{transform:translateX(-1rem) translateY(-1rem);}
     100%{transform:translate(0rem);}
+  }
+
+  .fade-in{ animation: fadeIn 1000ms ease-in-out;}
+  .fade-out{ animation: fadeOut 1000ms ease-in-out;}
+
+  @keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
+  }
+  @keyframes fadeOut {
+    from { opacity:1; }
+    to { opacity:0; }
   }
 </style>

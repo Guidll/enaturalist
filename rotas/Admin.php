@@ -8,6 +8,7 @@ use \App\Controller\Admin;
 $objetoRoteador->get('/admin', [
   'middlewares' => [
     'admin-login',
+    'maintenance',
   ],
   function($requisicao){
     return new Resposta(200, Admin\Home::getHome($requisicao));
@@ -18,6 +19,7 @@ $objetoRoteador->get('/admin', [
 $objetoRoteador->get('/admin/instituicao', [
   'middlewares' => [
     'admin-login',
+    'maintenance',
   ],
   function($requisicao){
     return new Resposta(200, Admin\HomeInstituicao::getHome($requisicao));
@@ -29,6 +31,7 @@ $objetoRoteador->get('/admin/instituicao', [
 $objetoRoteador->get('/admin/login', [
   'middlewares' => [
     'admin-deslogado',
+    'maintenance',
   ],
   function($requisicao){
     return new Resposta(200, Admin\Login::loginPegar($requisicao));
@@ -38,6 +41,7 @@ $objetoRoteador->get('/admin/login', [
 $objetoRoteador->post('/admin/login', [
   'middlewares' => [
     'admin-deslogado',
+    'maintenance',
   ],
   function($requisicao){
     return new Resposta(200, Admin\Login::loginDefinir($requisicao));
@@ -49,6 +53,7 @@ $objetoRoteador->post('/admin/login', [
 $objetoRoteador->get('/admin/cadastro', [
   'middlewares' => [
     'admin-deslogado',
+    'maintenance',
   ],
   function($requisicao){
     return new Resposta(200, Admin\Cadastro::getCadastro($requisicao));
@@ -69,7 +74,7 @@ $objetoRoteador->get('/admin/cadastro-instituicao', [
     'admin-deslogado',
   ],
   function($requisicao){
-    return new Resposta(200, Admin\CadastroInstituicao::getCadastro($requisicao));
+    return new Resposta(200, Admin\Cadastro::getCadastroInstituicao($requisicao));
   },
 ]);
 
@@ -78,7 +83,7 @@ $objetoRoteador->post('/admin/cadastro-instituicao', [
     'admin-deslogado',
   ],
   function($requisicao){
-    return new Resposta(200, Admin\CadastroInstituicao::setCadastro($requisicao));
+    return new Resposta(200, Admin\Cadastro::setCadastroInstituicao($requisicao));
   }
 ]);
 
@@ -315,5 +320,23 @@ $objetoRoteador->post('/admin/doacao-instituicao/{id}/excluir-instituicao', [
   ],
   function($requisicao, $id){
     return new Resposta(200, Admin\DoacaoInstituicao::setDoacaoExcluir($requisicao, $id));
+  }
+]);
+
+$objetoRoteador->get('/admin/doacao-instituicao/{id}/requisitar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao){
+    return new Resposta(200, Admin\DoacaoInstituicao::getDoacaoRequisitar($requisicao));
+  }
+]);
+
+$objetoRoteador->post('/admin/doacao-instituicao/{id}/requisitar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao){
+    return new Resposta(200, Admin\DoacaoInstituicao::setDoacaoRequisitar($requisicao));
   }
 ]);

@@ -8,8 +8,6 @@ use \App\Controller\Utilidades\Ambiente;
 use \App\Controller\Utilidades\Banco;
 use \App\Http\Middleware\Queue as MiddlewareFila;
 
-
-
 // Carrega variaveis de ambiente
 Ambiente::load(__DIR__);
 

@@ -29,11 +29,11 @@ class Pagina
       'link' => URL . '/admin/instituicao',
     ],
     'ecopontos' => [
-      'titulo' => 'Ecopontos',
+      'titulo' => 'Cadastrar Ecopontos',
       'link' => URL . '/admin/ecopontos-instituicao',
     ],
     'doacao' => [
-      'titulo' => 'Doar',
+      'titulo' => 'Doações',
       'link' => URL . '/admin/doacao-instituicao',
     ],
   ];

@@ -47,7 +47,7 @@
 	}
 
 
-	function mapaMarkerAdicionar(endereco) {
+	function mapaMarkerAdicionar($item, endereco) {
 		const infowindow = new google.maps.InfoWindow({
   		content: `<did class="p-4 text-base"><h3>${endereco}</h3><p>Ecoponto</p></div>`
 		})
@@ -75,6 +75,10 @@
 				marker.addListener('click', function() {
 					infowindow.open(map, marker)
 				})
+
+				$item.addEventListener('click', function() {
+					map.panTo(marker.getPosition())
+				})
 			}
 			else {
 				console.log('Geocode não foi bem-sucedido devido a: ' + status)
@@ -85,11 +89,11 @@
 
 	function ecopontoPegar() {
 		const $enderecos = document.querySelectorAll('.js-ecoponto-endereco')
-		console.log($enderecos)
 
 		$enderecos.
 			forEach($alvo => {
-				mapaMarkerAdicionar($alvo.innerText)
+				const $item = $alvo.closest('.js-ecoponto-item')
+				mapaMarkerAdicionar($item, $alvo.innerText)
 			})
 	}
 </script>

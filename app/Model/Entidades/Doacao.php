@@ -15,6 +15,47 @@ class Doacao extends Usuario
 
   public $quantidade;
 
+   // ----- ----------------------------
+  // ----- Inicio metodos padroes -----
+  // ----- ----------------------------
+  public function __construct() {
+  }
+
+
+  public function getId() {
+    return $this->id;
+  }
+  public function setId($id) {
+    $this->id = $id;
+  }
+
+
+  public function getIdUsuario() {
+    return $this->id_usuario;
+  }
+  public function setIdUsuario($id_usuario) {
+    $this->id_usuario = $id_usuario;
+  }
+
+
+  public function getMaterial() {
+    return $this->material;
+  }
+  public function setMaterial($materialValor) {
+    $this->material = $materialValor;
+  }
+
+
+  public function getQuantidade() {
+    return $this->quantidade;
+  }
+  public function setQuantidade($quantidadeValor) {
+    $this->quantidade = $quantidadeValor;
+  }
+  // ----- -------------------------
+  // ----- Fim Metodos padroes -----
+  // ----- -------------------------
+
 
   public function cadastrar()
   {
@@ -50,7 +91,7 @@ class Doacao extends Usuario
     return (new Banco('doacao'))->select($where,$order,$limit,$field);
   }
 
-  
+
   public static function getDoacaoPorId($id) {
     return self::doacaoPegar('id = ' . $id)->fetchObject(self::class);
   }

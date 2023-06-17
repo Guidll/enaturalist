@@ -22,6 +22,20 @@ class Usuario
 
   public $endereco;
 
+  // ----- ----------------------------
+  // ----- Inicio metodos padroes -----
+  // ----- ----------------------------
+  public function __construct() {
+  }
+
+
+  public function getId() {
+    return $this->id;
+  }
+  // ----- -------------------------
+  // ----- Fim Metodos padroes -----
+  // ----- -------------------------
+
 
   public static function usuarioPorEmailSelecionar($email)
   {
@@ -41,8 +55,7 @@ class Usuario
       'nome' => $this->nome,
       'email' => $this->email,
       'senha' => $this->senha,
-      'cpf' => $this->cpf ?? '',
-      'cnpj' => $this->cnpj ?? '',
+      'cpf' => $this->cpf,
       'endereco' => $this->endereco,
       'celular' => $this->celular,
     ]);
@@ -51,11 +64,18 @@ class Usuario
   }
 
 
+  public function setUsuarioEndereco($id) {
+    return (new Banco('usuarios'))->update('id = '. $this->id, [
+      'endereco' => $id,
+    ]);
+  }
+
+
   public static function getUsuarioId() {
     return self::getUsuario('id = ' . $_SESSION['admin']['usuario']['id'])->fetchObject(self::class)->id;
   }
-  
-  
+
+
   public static function getUsuarioPorId($id) {
     return self::getUsuario('id = ' . $id)->fetchObject(self::class);
   }
@@ -65,9 +85,18 @@ class Usuario
     return self::getUsuario()->fetchObject(self::class)->endereco;
   }
 
+  public static function getUsuarioEnderecoPorId($id) {
+    return self::getUsuario('id = ' . $id)->fetchObject(self::class)->endereco;
+  }
+
 
   public static function getUsuarioCelular() {
     return self::getUsuario()->fetchObject(self::class)->celular;
+  }
+
+
+  public static function getUsuarioCelularPorId($id) {
+    return self::getUsuario('id = ' . $id)->fetchObject(self::class)->celular;
   }
 
 
