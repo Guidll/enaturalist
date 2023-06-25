@@ -1,0 +1,14 @@
+<a href="{{URL}}/admin/doacao" class="flex items-center gap-1 w-min my-4 bg-blue-500 text-white rounded-md px-4 py-2">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pointer-events-none h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+  Voltar
+</a>
+<form method="post" class="py-6 flex flex-col gap-4">
+  <div class="flex items-center gap-4">
+    <div>Deseja aceitar a doação: <span class="font-bold">{{material}}</span> - <span class="font-bold">{{quantidade}}</span></div>
+    <button type="submit" class="self-start bg-blue-500 text-white rounded-md px-4 py-2">Aceitar</button>
+  </div>
+  <div class="text-lg font-bold">Ecopontos cediados nos endereços:</div>
+  <ul class="list-disc grid gap-2">
+    {{endereco}}
+  </ul>
+</form>

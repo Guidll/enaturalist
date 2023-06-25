@@ -126,7 +126,6 @@ $objetoRoteador->get('/admin/ecopontos/{id}/editar', [
     return new Resposta(200, Admin\Ecopontos::getEcopontosEditar($requisicao, $id));
   }
 ]);
-
 $objetoRoteador->post('/admin/ecopontos/{id}/editar', [
   'middlewares' => [
     'admin-login',
@@ -145,7 +144,6 @@ $objetoRoteador->get('/admin/ecopontos/{id}/excluir', [
     return new Resposta(200, Admin\Ecopontos::getEcopontosExcluir($requisicao, $id));
   }
 ]);
-
 $objetoRoteador->post('/admin/ecopontos/{id}/excluir', [
   'middlewares' => [
     'admin-login',
@@ -174,6 +172,7 @@ $objetoRoteador->post('/admin/ecopontos-instituicao', [
     return new Resposta(200, Admin\EcopontosInstituicao::setEcopontos($requisicao));
   }
 ]);
+
 // Editar
 $objetoRoteador->get('/admin/ecopontos-instituicao/{id}/editar', [
   'middlewares' => [
@@ -183,7 +182,6 @@ $objetoRoteador->get('/admin/ecopontos-instituicao/{id}/editar', [
     return new Resposta(200, Admin\EcopontosInstituicao::getEcopontosEditar($requisicao, $id));
   }
 ]);
-
 $objetoRoteador->post('/admin/ecopontos-instituicao/{id}/editar', [
   'middlewares' => [
     'admin-login',
@@ -202,7 +200,6 @@ $objetoRoteador->get('/admin/ecopontos-instituicao/{id}/excluir', [
     return new Resposta(200, Admin\EcopontosInstituicao::getEcopontosExcluir($requisicao, $id));
   }
 ]);
-
 $objetoRoteador->post('/admin/ecopontos-instituicao/{id}/excluir', [
   'middlewares' => [
     'admin-login',
@@ -231,6 +228,7 @@ $objetoRoteador->post('/admin/doacao', [
     return new Resposta(200, Admin\Doacao::setDoacao($requisicao));
   }
 ]);
+
 // Editar
 $objetoRoteador->get('/admin/doacao/{id}/editar', [
   'middlewares' => [
@@ -240,7 +238,6 @@ $objetoRoteador->get('/admin/doacao/{id}/editar', [
     return new Resposta(200, Admin\Doacao::getDoacaoEditar($requisicao, $id));
   }
 ]);
-
 $objetoRoteador->post('/admin/doacao/{id}/editar', [
   'middlewares' => [
     'admin-login',
@@ -249,6 +246,7 @@ $objetoRoteador->post('/admin/doacao/{id}/editar', [
     return new Resposta(200, Admin\Doacao::setDoacaoEditar($requisicao, $id));
   }
 ]);
+
 // Excluir
 $objetoRoteador->get('/admin/doacao/{id}/excluir', [
   'middlewares' => [
@@ -258,13 +256,49 @@ $objetoRoteador->get('/admin/doacao/{id}/excluir', [
     return new Resposta(200, Admin\Doacao::getDoacaoExcluir($requisicao, $id));
   }
 ]);
-
+// Excluir
 $objetoRoteador->post('/admin/doacao/{id}/excluir', [
   'middlewares' => [
     'admin-login',
   ],
   function($requisicao, $id){
     return new Resposta(200, Admin\Doacao::setDoacaoExcluir($requisicao, $id));
+  }
+]);
+
+// Aceitar doacao
+$objetoRoteador->get('/admin/doacao/{id}/aceitar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao, $id){
+    return new Resposta(200, Admin\Doacao::getDoacaoAceitar($requisicao, $id));
+  }
+]);
+$objetoRoteador->post('/admin/doacao/{id}/aceitar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao, $id){
+    return new Resposta(200, Admin\Doacao::setDoacaoAceitar($requisicao, $id));
+  }
+]);
+
+// Recusar doacao
+$objetoRoteador->get('/admin/doacao/{id}/recusar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao, $id){
+    return new Resposta(200, Admin\Doacao::getDoacaoRecusar($requisicao, $id));
+  }
+]);
+$objetoRoteador->post('/admin/doacao/{id}/recusar', [
+  'middlewares' => [
+    'admin-login',
+  ],
+  function($requisicao, $id){
+    return new Resposta(200, Admin\Doacao::setDoacaoRecusar($requisicao, $id));
   }
 ]);
 

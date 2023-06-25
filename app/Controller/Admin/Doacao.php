@@ -8,6 +8,9 @@ use \App\Controller\Utilidades\Paginacao;
 use \App\Model\Entidades\Doacao as EntidadeDoacao;
 use \App\Model\Entidades\Usuario as EntidadeUsuario;
 use \App\Model\Entidades\Endereco as EntidadeEndereco;
+use \App\Model\Entidades\Solicitacao as EntidadeSolicitacao;
+use \App\Model\Entidades\Instituicao as EntidadeInstituicao;
+use \App\Model\Entidades\Ecopontos as EntidadeEcopontos;
 
 class Doacao extends Pagina
 {
@@ -100,6 +103,103 @@ class Doacao extends Pagina
     $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
   }
 
+
+  public static function getDoacaoAceitar($requisicao, $id)
+  {
+    $id_doacao = $id;
+
+    $objDoacao = EntidadeDoacao::getDoacaoPorId($id_doacao);
+    $objSolicitacao = EntidadeSolicitacao::consultarSolicitacaoPorIdDoacao($id_doacao);
+
+    $id_instituicao = $objSolicitacao->getIdInstituicao();
+
+    // $objInstituicao = EntidadeInstituicao::consultarInstituicaoPorId($id_instituicao);
+    $objEcopontos = EntidadeEcopontos::consultarEcopontoPorIdUsuario($id_instituicao);
+
+    $id_endereco = $objEcopontos->getEndereco();
+
+    //$objEndereco = EntidadeEndereco::consultarEnderecoPorId($id_endereco);
+    $resultado = EntidadeEndereco::consultarEndereco($id_endereco);
+
+
+    if (! $objDoacao instanceof EntidadeDoacao) {
+      $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+    }
+
+    $endereco = '';
+
+    while ($objEndereco = $resultado->fetchObject(EntidadeEndereco::class)) {
+      $endereco .= '<li>' . $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado() . '</li>';
+    }
+
+    $conteudo = View::renderizar('admin/doacao/aceitar', [
+      'material' => $objDoacao->material,
+      'quantidade' => $objDoacao->quantidade,
+      'endereco' => $endereco,
+    ]);
+
+    return parent::getPainel('Aceitar doacao', $conteudo, 'doacao');
+  }
+
+
+  public static function setDoacaoAceitar($requisicao, $id)
+  {
+    $id_doacao = $id;
+
+    $objDoacao = EntidadeDoacao::getDoacaoPorId($id_doacao);
+    $objSolicitacao = EntidadeSolicitacao::consultarSolicitacaoPorIdDoacao($id_doacao);
+
+    if (! $objDoacao instanceof EntidadeDoacao) {
+      $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+    }
+
+    $id_solicitacao = $objSolicitacao->getId();
+    $objSolicitacao->excluir($id_solicitacao);
+    $objDoacao->setAceito(1);
+    $objDoacao->atualizar();
+
+    $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+  }
+
+
+  public static function getDoacaoRecusar($requisicao, $id)
+  {
+    $objDoacao = EntidadeDoacao::getDoacaoPorId($id);
+
+    if (! $objDoacao instanceof EntidadeDoacao) {
+      $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+    }
+
+    $conteudo = View::renderizar('admin/doacao/recusar', [
+      'material' => $objDoacao->material,
+      'quantidade' => $objDoacao->quantidade,
+    ]);
+
+    return parent::getPainel('Recusar doacao', $conteudo, 'doacao');
+  }
+
+
+  public static function setDoacaoRecusar($requisicao, $id)
+  {
+    $id_doacao = $id;
+
+    $objDoacao = EntidadeDoacao::getDoacaoPorId($id_doacao);
+    $objSolicitacao = EntidadeSolicitacao::consultarSolicitacaoPorIdDoacao($id_doacao);
+
+    if (! $objDoacao instanceof EntidadeDoacao) {
+      $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+    }
+
+    $id_solicitacao = $objSolicitacao->getId();
+    $objSolicitacao->excluir($id_solicitacao);
+
+    $objDoacao->setRequisitado(0);
+    $objDoacao->setAceito(0);
+    $objDoacao->atualizar();
+
+    $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
+  }
+
   private static function doacaoItensPegar($requisicao, &$objPaginacao)
   {
     $itens = '';
@@ -110,7 +210,7 @@ class Doacao extends Pagina
     $objEndereco = EntidadeEndereco::consultarEnderecoPorIdUsuario($usuarioId);
     $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
 
-    $quantidadeTotal = EntidadeDoacao::doacaoPegar('id_usuario = ' . $usuarioId, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+    $quantidadeTotal = EntidadeDoacao::doacaoPegar("id_usuario = $usuarioId AND aceito = 0", null, null, "COUNT(*) as qtd")->fetchObject()->qtd;
 
     $urlParametros = $requisicao->urlParametrosPegar();
 
@@ -118,9 +218,20 @@ class Doacao extends Pagina
 
     $objPaginacao = new Paginacao($quantidadeTotal, $paginaAtual, 3);
 
-    $resultado = EntidadeDoacao::doacaoPegar('id_usuario = ' . $usuarioId, 'id DESC', $objPaginacao->getLimit());
+    $resultado = EntidadeDoacao::doacaoPegar("id_usuario = $usuarioId AND aceito = 0", 'requisitado DESC', $objPaginacao->getLimit());
 
     while($objDoacao = $resultado->fetchObject(EntidadeDoacao::class)) {
+      $requisitado = $objDoacao->getRequisitado();
+      $id_doacao = $objDoacao->getId();
+      $link_aceito =
+        '<a href="' . URL . '/admin/doacao/' . $id_doacao . '/aceitar" class="block p-2 bg-blue-500 text-white rounded-md">
+        Aceitar doação
+        </a>';
+      $link_recusado =
+        '<a href="' . URL . '/admin/doacao/' . $id_doacao . '/recusar" class="block p-2 bg-red-500 text-white rounded-md">
+        Recusar doação
+        </a>';
+
       $itens .= View::renderizar('admin/doacao/itens', [
         'id' => $objDoacao->getId(),
         'id_usuario' => $usuarioId,
@@ -128,6 +239,8 @@ class Doacao extends Pagina
         'quantidade' => $objDoacao->getQuantidade(),
         'endereco' => $endereco,
         'celular' => $usuarioCelular,
+        'link-aceitar' => $requisitado == 1 ? $link_aceito : '',
+        'link-recusar' => $requisitado == 1 ? $link_recusado : '',
       ]);
     }
 

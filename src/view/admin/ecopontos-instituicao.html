@@ -27,9 +27,58 @@
 		<h3 class="text-2xl font-bold">Cadastrar um ecoponto</h3>
 
 		<form method="post" action="?pagina=1" class="grid gap-4 js-ecoponto-form">
-			<div class="grid gap-1">
-				<label for="endereco">Endereço</label>
-				<input type="text" name="endereco" required id="endereco" class="px-2 py-1 border border-solid border-gray-200 outline-none rounded-md js-modal-ecoponto-endereco">
+			<div class="grid relative">
+				<label for="cep" class="mb-1 pl-2">CEP</label>
+				<input type="text" name="cep" id="cep" required oninput="cepFormatar()" maxlength="9" class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+			</div>
+			<div class="grid relative">
+				<label for="rua" class="mb-1 pl-2">Rua</label>
+				<input type="text" name="rua" id="rua" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+			</div>
+			<div class="grid relative">
+				<label for="numero" class="mb-1 pl-2">Número</label>
+				<input type="text" name="numero" id="numero" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+			</div>
+			<div class="grid relative">
+				<label for="bairro" class="mb-1 pl-2">Bairro</label>
+				<input type="text" name="bairro" id="bairro" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+			</div>
+			<div class="grid relative">
+				<label for="cidade" class="mb-1 pl-2">Cidade</label>
+				<input type="text" name="cidade" id="cidade" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+			</div>
+			<div class="grid relative">
+				<label for="estado" class="mb-1 pl-2">Estado</label>
+				<select name="estado" id="estado" required class="px-2 p-2 border border-solid border-gray-200 outline-none transition focus:ring focus:ring-blue-500 rounded-md">
+					<option value="">Selecione um estado</option>
+					<option value="AC">Acre</option>
+					<option value="AL">Alagoas</option>
+					<option value="AP">Amapá</option>
+					<option value="AM">Amazonas</option>
+					<option value="BA">Bahia</option>
+					<option value="CE">Ceará</option>
+					<option value="DF">Distrito Federal</option>
+					<option value="ES">Espírito Santo</option>
+					<option value="GO">Goiás</option>
+					<option value="MA">Maranhão</option>
+					<option value="MT">Mato Grosso</option>
+					<option value="MS">Mato Grosso do Sul</option>
+					<option value="MG">Minas Gerais</option>
+					<option value="PA">Pará</option>
+					<option value="PB">Paraíba</option>
+					<option value="PR">Paraná</option>
+					<option value="PE">Pernambuco</option>
+					<option value="PI">Piauí</option>
+					<option value="RJ">Rio de Janeiro</option>
+					<option value="RN">Rio Grande do Norte</option>
+					<option value="RS">Rio Grande do Sul</option>
+					<option value="RO">Rondônia</option>
+					<option value="RR">Roraima</option>
+					<option value="SC">Santa Catarina</option>
+					<option value="SP">São Paulo</option>
+					<option value="SE">Sergipe</option>
+					<option value="TO">Tocantins</option>
+				</select>
 			</div>
 
 			<div class="grid gap-1">
@@ -41,11 +90,12 @@
 	</div>
 </dialog>
 
+<script defer src="../src/js/formulario.js"></script>
 <!-- Script da API Google Maps -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAotx4qUJW0uJucxhe1uskX9-SaA4tT2kI&callback=initMap"></script>
 <script async defer>
 	let map
-	
+
 	function initMap() {
 		const localizacaoPadrao = {lat:-23.549207347886, lng:-46.37388629155516}
 
@@ -91,7 +141,7 @@
 				// Obtém a latitude e longitude do primeiro resultado retornado
 				const lat = resultado[0].geometry.location.lat()
 				const lng = resultado[0].geometry.location.lng()
-				
+
 				// Use lat e lng como necessário
 				console.log(lat, lng)
 

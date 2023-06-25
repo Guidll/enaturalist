@@ -15,10 +15,19 @@ class Doacao extends Usuario
 
   public $quantidade;
 
-   // ----- ----------------------------
+  public $descricao;
+
+  public $requisitado;
+
+  public $aceito;
+
+  private $data;
+
+  // ----------------------------------
   // ----- Inicio metodos padroes -----
-  // ----- ----------------------------
+  // ----------------------------------
   public function __construct() {
+    $this->setData(date('Y-m-d H:i:s'));
   }
 
 
@@ -52,9 +61,34 @@ class Doacao extends Usuario
   public function setQuantidade($quantidadeValor) {
     $this->quantidade = $quantidadeValor;
   }
-  // ----- -------------------------
+
+
+  public function getRequisitado() {
+    return $this->requisitado;
+  }
+  public function setRequisitado($requisitadoValor) {
+    $this->requisitado = $requisitadoValor;
+  }
+
+
+  public function getAceito() {
+    return $this->aceito;
+  }
+  public function setAceito($aceitoValor) {
+    $this->aceito = $aceitoValor;
+  }
+
+
+  public function getData() {
+    return $this->data;
+  }
+  public function setData($dataValor) {
+    $this->data = $dataValor;
+  }
+
+  // -------------------------------
   // ----- Fim Metodos padroes -----
-  // ----- -------------------------
+  // -------------------------------
 
 
   public function cadastrar()
@@ -65,6 +99,7 @@ class Doacao extends Usuario
       'id_usuario' => $_SESSION['admin']['usuario']['id'],
       'material' => $this->material,
       'quantidade' => $this->quantidade,
+      'data' => $this->getData(),
     ]);
 
     return true;
@@ -76,6 +111,9 @@ class Doacao extends Usuario
     return (new Banco('doacao'))->update('id = '. $this->id, [
       'material' => $this->material,
       'quantidade' => $this->quantidade,
+      'descricao' => $this->descricao,
+      'requisitado' => $this->getRequisitado(),
+      'aceito' => $this->getAceito(),
     ]);
   }
 

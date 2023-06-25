@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use \App\Controller\Utilidades\View;
-use \App\Model\Entidades\Usuario as EntidadeUsuario;
 
 class Home extends Pagina
 {

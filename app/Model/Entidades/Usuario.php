@@ -22,12 +22,13 @@ class Usuario
 
   public $endereco;
 
- // ----- ----------------------------
+  // ----- ----------------------------
   // ----- Inicio metodos padroes -----
   // ----- ----------------------------
   public function __construct() {
-
+    // $this->setData(date('Y-m-d H:i:s'));
   }
+
 
   public function getId() {
     return $this->id;
@@ -122,6 +123,7 @@ class Usuario
   }
 
 
+  // Precisa remover esse metodo
   public static function getUsuarioId() {
     return self::getUsuario('id = ' . $_SESSION['admin']['usuario']['id'])->fetchObject(self::class)->id;
   }

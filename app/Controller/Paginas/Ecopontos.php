@@ -5,6 +5,7 @@ namespace App\Controller\Paginas;
 use \App\Controller\Utilidades\View;
 use \App\Controller\Utilidades\Paginacao;
 use \App\Model\Entidades\Ecopontos as EntidadeEcopontos;
+use \App\Model\Entidades\Endereco as EntidadeEndereco;
 
 class Ecopontos extends Paginas
 {
@@ -19,7 +20,7 @@ class Ecopontos extends Paginas
   }
 
 
-  public static function ecopontosCadastrar($requisicao) 
+  public static function ecopontosCadastrar($requisicao)
   {
     $dadosPost = $requisicao->urlParametrosPostPegar();
     $objEcoponto = new EntidadeEcopontos;
@@ -31,7 +32,7 @@ class Ecopontos extends Paginas
   }
 
 
-  // public static function ecopontosRemover($requisicao) 
+  // public static function ecopontosRemover($requisicao)
   // {
   //   // $dadosPost = $requisicao->urlParametrosPostPegar();
   //   $objEcoponto = new EntidadeEcopontos;
@@ -45,6 +46,7 @@ class Ecopontos extends Paginas
 
   private static function ecopontosItensPegar($requisicao, &$objPaginacao)
   {
+
     $itens = '';
 
     $quantidadeTotal = EntidadeEcopontos::ecopontosPegar(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
@@ -55,11 +57,17 @@ class Ecopontos extends Paginas
 
     $objPaginacao = new Paginacao($quantidadeTotal, $paginaAtual, 3);
 
-    $resultado = EntidadeEcopontos::ecopontosPegar(null, 'id DESC', $objPaginacao->getLimit());
+    $resultadoEcopontos = EntidadeEcopontos::ecopontosPegar(null, 'id DESC', $objPaginacao->getLimit());
 
-    while($objEcoponto = $resultado->fetchObject(EntidadeEcopontos::class)) {
-      $itens .= View::renderizar('paginas/ecopontos/itens', [
-        'endereco' => $objEcoponto->endereco,
+    while($objEcoponto = $resultadoEcopontos->fetchObject(EntidadeEcopontos::class)) {
+      $resultadoEnderecos = EntidadeEndereco::consultarEnderecoPorId($objEcoponto->getEndereco());
+
+      $objEndereco = $resultadoEnderecos;
+      $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
+
+      $itens .= View::renderizar('admin/ecopontos/itens', [
+        'id' => $objEcoponto->id,
+        'endereco' => $endereco,
         'tag' => $objEcoponto->tag,
       ]);
     }

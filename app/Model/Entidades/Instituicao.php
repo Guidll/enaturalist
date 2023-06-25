@@ -118,6 +118,9 @@ class Instituicao
   public static function getInstituicaoPorId($id) {
     return self::getInstituicao('id = ' . $id)->fetchObject(self::class);
   }
+  public static function consultarInstituicaoPorId($id) {
+    return self::getInstituicao('id = ' . $id)->fetchObject(self::class);
+  }
 
 
   public static function getInstituicaoEndereco() {

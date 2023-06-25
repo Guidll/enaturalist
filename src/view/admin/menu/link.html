@@ -1,1 +1,6 @@
-<li><a href="{{link}}" class="{{atual}}">{{titulo}}</a></li>
+<li class="relative">
+  <a href="{{link}}" class="{{atual}}">
+    {{titulo}}
+  </a>
+  <div class="{{solicitacao-exibir}} absolute -top-3 -right-5 aspect-square px-2 rounded-full bg-blue-100 text-blue-500 font-bold"><span class="sr-only">Quantidade de solicitações:</span>{{solicitacao}}</div>
+</li>

@@ -2,7 +2,24 @@
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pointer-events-none h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
   Voltar
 </a>
-<form method="post" class="py-6 flex items-center gap-4">
-  <div>Deseja excluir o Ecoponto <span class="font-bold">{{endereco}}</span> - <span class="font-bold">{{tag}}</span></div>
-  <button type="submit" class="self-end bg-blue-500 text-white rounded-md px-4 py-2">Excluir</button>
+<form method="post" class="mx-auto max-w-lg py-6 grid gap-4">
+  <fieldset>
+    <div class="grid gap-4 text-gray-800">
+      <legend class="text-2xl font-bold mb-4">Excluir Ecoponto</legend>
+      <div class="grid gap-2">
+        <h2 class="text-xl">Deseja excluir o Ecoponto sediado no endereço:</h2>
+        <div class="p-2 bg-white rounded-lg text-lg">
+          <div class="flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 text-gray-500"><path fill-rule="evenodd" d="M5.25 2.25a3 3 0 00-3 3v4.318a3 3 0 00.879 2.121l9.58 9.581c.92.92 2.39 1.186 3.548.428a18.849 18.849 0 005.441-5.44c.758-1.16.492-2.629-.428-3.548l-9.58-9.581a3 3 0 00-2.122-.879H5.25zM6.375 7.5a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" clip-rule="evenodd"/></svg>
+            {{tag}}
+          </div>
+          <span>{{rua}}</span>
+          <span>, {{numero}}</span>
+          <span>, {{bairro}}</span>
+          <span>- {{estado}}</span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <button type="submit" class="mt-4 tracking-widest text-lg font-bold self-end bg-blue-500 text-white rounded-md px-4 py-2">Excluir</button>
 </form>

@@ -17,10 +17,35 @@ class Ecopontos
 
   public $data;
 
+  // ----- ----------------------------
+  // ----- Inicio metodos padroes -----
+  // ----- ----------------------------
+  public function __construct() {
+    $this->data = date('Y-m-d H:i:s');
+  }
+
+  public function getId() {
+    return $this->id;
+  }
+  public function setId($id) {
+    $this->id = $id;
+  }
+
+
+  public function getEndereco() {
+    return $this->endereco;
+  }
+  public function setEndereco($endereco) {
+    $this->endereco = $endereco;
+  }
+  // ----- -------------------------
+  // ----- Fim Metodos padroes -----
+  // ----- -------------------------
+
 
   public function cadastrar()
-  { 
-    $this->data = date('Y-m-d H:i:s');
+  {
+
 
 
     $this->id = (new Banco('ecopontos'))->insert([
@@ -48,13 +73,25 @@ class Ecopontos
   }
 
 
+  public function setEcopontoEndereco($id) {
+    return (new Banco('ecopontos'))->update('id = '. $this->id, [
+      'endereco' => $id,
+    ]);
+  }
+
+
   public static function ecopontosPegar($where = null, $order = null, $limit = null, $field = '*')
   {
     return (new Banco('ecopontos'))->select($where,$order,$limit,$field);
   }
 
-  
+
   public static function getEcopontoPorId($id) {
     return self::ecopontosPegar('id = ' . $id)->fetchObject(self::class);
+  }
+
+
+  public static function consultarEcopontoPorIdUsuario($id) {
+    return self::ecopontosPegar('id_usuario = ' . $id)->fetchObject(self::class);
   }
 }

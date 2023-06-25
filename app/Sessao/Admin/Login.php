@@ -25,6 +25,8 @@ class Login
       'email' => $entidade->getEmail(),
     ];
 
+    print_r($_SESSION['admin']['usuario']);
+
     return true;
   }
 

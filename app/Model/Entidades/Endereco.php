@@ -24,9 +24,10 @@ class Endereco {
 
   private $data;
 
-  // ----- ----------------------------
+
+  // ----------------------------------
   // ----- Inicio metodos padroes -----
-  // ----- ----------------------------
+  // ----------------------------------
   public function __construct() {
     $this->setData(date('Y-m-d H:i:s'));
   }
@@ -102,10 +103,11 @@ class Endereco {
   public function setData($dataValor) {
     $this->data = $dataValor;
   }
-  // ----- -------------------------
-  // ----- Fim Metodos padroes -----
-  // ----- -------------------------
 
+
+  // ----------------
+  // ----- CRUD -----
+  // ----------------
   public function cadastrar() {
     $this->setId((new Banco('endereco'))->insert([
       'id_usuario' => $this->getIdUsuario(),
@@ -115,37 +117,43 @@ class Endereco {
       'bairro' => $this->getBairro(),
       'cidade' => $this->getCidade(),
       'estado' => $this->getEstado(),
-      'data' => $this->getData(),
     ]));
 
     return true;
   }
 
 
-  // public function atualizar() {
-  //   return (new Banco('ecopontos'))->update('id = '. $this->id, [
-  //     'endereco' => $this->endereco,
-  //     'tag' => $this->tag,
-  //   ]);
-  // }
+  public function atualizar() {
+    return (new Banco('endereco'))->update('id = '. self::getId(), [
+      'cep' => $this->getCep(),
+      'rua' => $this->getRua(),
+      'numero' => $this->getNumero(),
+      'bairro' => $this->getBairro(),
+      'cidade' => $this->getCidade(),
+      'estado' => $this->getEstado(),
+    ]);
+  }
 
 
-  // public function excluir() {
-  //   return (new Banco('ecopontos'))->delete('id = ' . $this->id);
-  // }
+  public function excluir() {
+    return (new Banco('ecopontos'))->delete('id = ' . $this->id);
+  }
 
 
+  // --------------------------------------
+  // ----- Consulta no banco de dados -----
+  // --------------------------------------
   public static function consultarEndereco($where = null, $order = null, $limit = null, $field = '*') {
     return (new Banco('endereco'))->select($where,$order,$limit,$field);
   }
 
 
-  public static function consultarEnderecoPorIdUsuario($id_usuario) {
-    return self::consultarEndereco('id_usuario = ' . $id_usuario)->fetchObject(self::class);
+  public static function consultarEnderecoPorId($id) {
+    return self::consultarEndereco('id = ' . $id)->fetchObject(self::class);
   }
 
 
-  public static function consultarEnderecoPorId($id) {
-    return self::consultarEndereco('id = ' . $id)->fetchObject(self::class);
+  public static function consultarEnderecoPorIdUsuario($id_usuario) {
+    return self::consultarEndereco('id_usuario = ' . $id_usuario)->fetchObject(self::class);
   }
 }

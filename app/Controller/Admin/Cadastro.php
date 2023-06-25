@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use \App\Controller\Utilidades\View;
 use \App\Model\Entidades\Usuario as EntendidadeUsuario;
 use \App\Model\Entidades\Instituicao as EntendidadeInstituicao;
-use \App\Model\Entidades\Endereco as EntendidadeEndereco;
+use \App\Model\Entidades\Endereco as EntidadeEndereco;
 
 class Cadastro extends Pagina
 {
@@ -29,7 +29,7 @@ class Cadastro extends Pagina
     $dadosPost = $requisicao->urlParametrosPostPegar();
 
     $objUsuario = new EntendidadeUsuario;
-    $objEndereco = new EntendidadeEndereco;
+    $objEndereco = new EntidadeEndereco;
 
     $objUsuario->nome = $dadosPost['nome'];
     $objUsuario->email = $dadosPost['email'];
@@ -77,7 +77,7 @@ class Cadastro extends Pagina
     $dadosPost = $requisicao->urlParametrosPostPegar();
 
     $objInstituicao = new EntendidadeInstituicao;
-    $objEndereco = new EntendidadeEndereco;
+    $objEndereco = new EntidadeEndereco;
 
     $objInstituicao->setNome($dadosPost['nome']);
     $objInstituicao->setEmail($dadosPost['email']);

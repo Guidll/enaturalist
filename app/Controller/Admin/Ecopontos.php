@@ -6,6 +6,7 @@ use \App\Controller\Utilidades\View;
 use \App\Controller\Paginas\Paginas;
 use \App\Controller\Utilidades\Paginacao;
 use \App\Model\Entidades\Ecopontos as EntidadeEcopontos;
+use \App\Model\Entidades\Endereco as EntidadeEndereco;
 
 class Ecopontos extends Pagina
 {
@@ -20,7 +21,7 @@ class Ecopontos extends Pagina
   }
 
 
-  // public static function ecopontosCadastrar($requisicao) 
+  // public static function ecopontosCadastrar($requisicao)
   // {
   //   $dadosPost = $requisicao->urlParametrosPostPegar();
   //   $objEcoponto = new EntidadeEcopontos;
@@ -30,11 +31,11 @@ class Ecopontos extends Pagina
 
   //   return self::getEcopontos($requisicao);
   // }
-  
-  // public static function getEcopontosEditar($requisicao, $id) 
+
+  // public static function getEcopontosEditar($requisicao, $id)
   // {
   //   $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
-    
+
   //   if (! $objEcoponto instanceof EntidadeEcopontos) {
   //     $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
   //   }
@@ -48,10 +49,10 @@ class Ecopontos extends Pagina
   // }
 
 
-  // public static function setEcopontosEditar($requisicao, $id) 
+  // public static function setEcopontosEditar($requisicao, $id)
   // {
   //   $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
-    
+
   //   if (! $objEcoponto instanceof EntidadeEcopontos) {
   //     $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
   //   }
@@ -65,10 +66,10 @@ class Ecopontos extends Pagina
   // }
 
 
-  // public static function getEcopontosExcluir($requisicao, $id) 
+  // public static function getEcopontosExcluir($requisicao, $id)
   // {
   //   $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
-    
+
   //   if (! $objEcoponto instanceof EntidadeEcopontos) {
   //     $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
   //   }
@@ -82,10 +83,10 @@ class Ecopontos extends Pagina
   // }
 
 
-  // public static function setEcopontosExcluir($requisicao, $id) 
+  // public static function setEcopontosExcluir($requisicao, $id)
   // {
   //   $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
-    
+
   //   if (! $objEcoponto instanceof EntidadeEcopontos) {
   //     $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
   //   }
@@ -110,12 +111,17 @@ class Ecopontos extends Pagina
 
     $objPaginacao = new Paginacao($quantidadeTotal, $paginaAtual, 3);
 
-    $resultado = EntidadeEcopontos::ecopontosPegar(null, 'id DESC', $objPaginacao->getLimit());
+    $resultadoEcopontos = EntidadeEcopontos::ecopontosPegar(null, 'id DESC', $objPaginacao->getLimit());
 
-    while($objEcoponto = $resultado->fetchObject(EntidadeEcopontos::class)) {
-      $itens .= View::renderizar('paginas/ecopontos/itens', [
+    while($objEcoponto = $resultadoEcopontos->fetchObject(EntidadeEcopontos::class)) {
+      $resultadoEnderecos = EntidadeEndereco::consultarEnderecoPorId($objEcoponto->getEndereco());
+
+      $objEndereco = $resultadoEnderecos;
+      $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
+
+      $itens .= View::renderizar('admin/ecopontos/itens', [
         'id' => $objEcoponto->id,
-        'endereco' => $objEcoponto->endereco,
+        'endereco' => $endereco,
         'tag' => $objEcoponto->tag,
       ]);
     }
