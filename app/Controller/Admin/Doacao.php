@@ -113,20 +113,13 @@ class Doacao extends Pagina
 
     $id_instituicao = $objSolicitacao->getIdInstituicao();
 
-    // $objInstituicao = EntidadeInstituicao::consultarInstituicaoPorId($id_instituicao);
-    $objEcopontos = EntidadeEcopontos::consultarEcopontoPorIdUsuario($id_instituicao);
-
-    $id_endereco = $objEcopontos->getEndereco();
-
-    //$objEndereco = EntidadeEndereco::consultarEnderecoPorId($id_endereco);
-    $resultado = EntidadeEndereco::consultarEndereco($id_endereco);
-
-
     if (! $objDoacao instanceof EntidadeDoacao) {
       $requisicao->roteadorPegar()->redirecionar('/admin/doacao');
     }
 
     $endereco = '';
+
+    $resultado = EntidadeEndereco::consultarEndereco('id_usuario = ' . $id_instituicao);
 
     while ($objEndereco = $resultado->fetchObject(EntidadeEndereco::class)) {
       $endereco .= '<li>' . $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado() . '</li>';

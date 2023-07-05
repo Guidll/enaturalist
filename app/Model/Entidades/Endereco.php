@@ -136,7 +136,7 @@ class Endereco {
 
 
   public function excluir() {
-    return (new Banco('ecopontos'))->delete('id = ' . $this->id);
+    return (new Banco('endereco'))->delete('id = ' . $this->id);
   }
 
 

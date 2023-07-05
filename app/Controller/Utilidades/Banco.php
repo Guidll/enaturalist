@@ -140,8 +140,6 @@ class Banco{
     $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
     // print_r($query);
 
-    // print_r($query);
-
     //EXECUTA A QUERY
     return $this->execute($query);
   }

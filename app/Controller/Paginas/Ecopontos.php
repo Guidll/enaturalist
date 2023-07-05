@@ -49,7 +49,38 @@ class Ecopontos extends Paginas
 
     $itens = '';
 
-    $quantidadeTotal = EntidadeEcopontos::ecopontosPegar(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+    $urlParametros = $requisicao->urlParametrosPegar();
+    $filtro_estado = $urlParametros['filtro-estado'] ?? '';
+    $filtro_cidade = $urlParametros['filtro-cidade'] ?? '';
+    $filtro = '';
+    $condicao = [];
+
+    if ($filtro_estado && empty($filtro_cidade)) {
+      $filtro = 'estado = ' . '"' . $filtro_estado . '"';
+    }
+    else if ($filtro_estado && $filtro_cidade) {
+      $filtro = 'estado = ' . '"' . $filtro_estado . '"' . ' AND cidade = ' . '"' . $filtro_cidade . '"';
+    }
+    else {
+      $filtro = '';
+    }
+
+    $enderecos = EntidadeEndereco::consultarEndereco($filtro);
+
+    while ($objEndereco = $enderecos->fetchObject(EntidadeEndereco::class)) {
+      $condicao[] = $objEndereco->getId();
+    }
+
+
+    if (empty($condicao)) {
+      $condicao = 'IS NULL';
+    }
+    else {
+      $condicao = implode(',', $condicao);
+    }
+
+
+    $quantidadeTotal = EntidadeEcopontos::ecopontosPegar('FIND_IN_SET(endereco, ' . '"' . $condicao . '"' . ')', null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
 
     $urlParametros = $requisicao->urlParametrosPegar();
 
@@ -57,7 +88,7 @@ class Ecopontos extends Paginas
 
     $objPaginacao = new Paginacao($quantidadeTotal, $paginaAtual, 3);
 
-    $resultadoEcopontos = EntidadeEcopontos::ecopontosPegar(null, 'id DESC', $objPaginacao->getLimit());
+    $resultadoEcopontos = EntidadeEcopontos::ecopontosPegar('FIND_IN_SET(endereco, ' . '"' . $condicao . '"' . ')', 'id DESC', $objPaginacao->getLimit());
 
     while($objEcoponto = $resultadoEcopontos->fetchObject(EntidadeEcopontos::class)) {
       $resultadoEnderecos = EntidadeEndereco::consultarEnderecoPorId($objEcoponto->getEndereco());

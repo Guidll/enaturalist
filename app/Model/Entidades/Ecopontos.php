@@ -45,9 +45,6 @@ class Ecopontos
 
   public function cadastrar()
   {
-
-
-
     $this->id = (new Banco('ecopontos'))->insert([
       'id_usuario' => $_SESSION['admin']['usuario']['id'],
       'endereco' => $this->endereco,

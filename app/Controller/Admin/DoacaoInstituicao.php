@@ -115,6 +115,7 @@ class DoacaoInstituicao extends Pagina
     $urlParametros = $requisicao->urlParametrosPegar();
     $filtro_material = $urlParametros['filtro-material'] ?? '';
     $filtro_estado = $urlParametros['filtro-estado'] ?? '';
+    $filtro_cidade = $urlParametros['filtro-cidade'] ?? '';
 
     $condicao = '';
 
@@ -134,7 +135,24 @@ class DoacaoInstituicao extends Pagina
 
     $resultado = EntidadeDoacao::doacaoPegar($condicao, 'id DESC', $objPaginacao->getLimit());
 
-    if ($filtro_estado) {
+    if (! empty($filtro_estado) && ! empty($filtro_cidade)) {
+      while($objDoacao = $resultado->fetchObject(EntidadeDoacao::class)) {
+        $objUsuario = EntidadeUsuario::getUsuarioPorId($objDoacao->getIdUsuario());
+        $objEndereco = EntidadeEndereco::consultarEnderecoPorIdUsuario($objUsuario->getId());
+        $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
+
+        if ($filtro_estado == $objEndereco->getEstado() && $filtro_cidade == $objEndereco->getCidade()) {
+          $itens .= View::renderizar('admin/doacao/itens-instituicao', [
+            'id' => $objDoacao->id,
+            'material' => $objDoacao->getMaterial(),
+            'quantidade' => $objDoacao->getQuantidade(),
+            'endereco' => $endereco,
+            'celular' => $objUsuario->getCelular(),
+          ]);
+        }
+      }
+    }
+    else if (! empty($filtro_estado)) {
       while($objDoacao = $resultado->fetchObject(EntidadeDoacao::class)) {
         $objUsuario = EntidadeUsuario::getUsuarioPorId($objDoacao->getIdUsuario());
         $objEndereco = EntidadeEndereco::consultarEnderecoPorIdUsuario($objUsuario->getId());

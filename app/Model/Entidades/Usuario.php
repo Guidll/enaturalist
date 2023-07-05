@@ -14,8 +14,6 @@ class Usuario
 
   public $cpf;
 
-  public $cnpj;
-
   public $senha;
 
   public $celular;

@@ -154,6 +154,8 @@ class EcopontosInstituicao extends Pagina
   public static function setEcopontosExcluir($requisicao, $id)
   {
     $objEcoponto = EntidadeEcopontos::getEcopontoPorId($id);
+    $objEndereco = EntidadeEndereco::consultarEnderecoPorId($objEcoponto->getEndereco());
+
 
     if (! $objEcoponto instanceof EntidadeEcopontos) {
       $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos');
@@ -162,7 +164,9 @@ class EcopontosInstituicao extends Pagina
     $dadosPost = $requisicao->urlParametrosPostPegar();
     $objEcoponto->endereco = $dadosPost['endereco'] ?? $objEcoponto->endereco;
     $objEcoponto->tag = $dadosPost['tag'] ?? $objEcoponto->tag;
-    $objEcoponto->excluir($id);
+
+    $objEcoponto->excluir();
+    $objEndereco->excluir();
 
     $requisicao->roteadorPegar()->redirecionar('/admin/ecopontos-instituicao');
   }
@@ -174,11 +178,6 @@ class EcopontosInstituicao extends Pagina
     $usuarioId = $_SESSION['admin']['usuario']['id'];
 
     $quantidadeTotal = EntidadeEcopontos::ecopontosPegar('id_usuario = ' . $usuarioId, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
-
-    // for ($i = 0; $i == $quantidadeTotal; $i++) {
-    //   $objEndereco = new EntidadeEndereco;
-    //   $endereco = $objEndereco->getRua() . ', ' . $objEndereco->getNumero() . ', ' . $objEndereco->getBairro() . ' - ' . $objEndereco->getCidade() . ' - ' . $objEndereco->getEstado();
-    // }
 
     $urlParametros = $requisicao->urlParametrosPegar();
 
